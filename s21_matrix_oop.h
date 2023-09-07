@@ -14,6 +14,8 @@ class S21Matrix {
         S21Matrix(S21Matrix&& other);
         ~S21Matrix();
 
+        void allocateMatrix(double*** matrix, int rows, int cols);
+
     
 
 };

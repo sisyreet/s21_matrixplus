@@ -1,6 +1,6 @@
 NAME			= s21_matrix
 
-SRCS			= main.cpp
+SRCS			= main.cpp s21_matrix_oop.cpp
 
 HEADER			= s21_matrix_oop.h
 
