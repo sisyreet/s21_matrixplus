@@ -8,7 +8,7 @@ OBJS			= $(SRCS:.cpp=.o)
 
 CC				= g++
 RM				= rm -rf
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g
 
 .PHONY:			all clean fclean re
 

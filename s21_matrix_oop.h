@@ -14,10 +14,15 @@ class S21Matrix {
         S21Matrix(S21Matrix&& other);
         ~S21Matrix();
 
-        void allocateMatrix(double*** matrix, int rows, int cols);
+        // getters and setters
+        int getRows();
+        int getCols();
+        void setRows(int rows);
+        void setCols(int cols);
 
-    
-
+        // overloads
+        double &operator()(int i, int j) const;
+        
 };
 
 #endif
