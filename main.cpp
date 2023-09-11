@@ -28,7 +28,7 @@ int main()
         }
         std::cout << std::endl;
     }
-    m.setRows(2);    
+    m.setRows(3);    
     for (int i = 0; i < m.getRows(); i++)
     {
         for (int j = 0; j < m.getCols(); j++) {

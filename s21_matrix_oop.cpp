@@ -42,18 +42,32 @@ int S21Matrix::getCols() {
 }
 
 void S21Matrix::setRows(int rows) {
+  //delete
+  std::cout << "old rows: " << rows << "\n" << "new rows: " << rows_ << "\n"; 
   if (rows < 1)
     throw std::invalid_argument("rows can't be less than 1!");
+  // if rows = rows_
   if (rows < rows_)
   {
-    std::cout << rows << rows_ << std::endl;
     for (int i = rows; i != rows_; i++)
       delete[] matrix_[i];
     rows_ = rows;
   }
-  if (rows > rows_)
+  else if (rows > rows_)
   {
-    
+    double **temp = new double*[rows]();
+    for (int i = 0; i < rows; i++)
+      temp[i] = new double[cols_]();
+    for (int i = 0; i < rows_; i++)
+      for (int j = 0; j < cols_; j++)
+        temp[i][j] = matrix_[i][j];
+    for (int i = rows; i != rows_; i++)
+      delete[] matrix_[i];
+    // delete[] matrix_;
+    matrix_ = temp;
+    for (int i = rows; i != rows_; i++)
+      delete[] temp[i];
+    delete[] temp;
   }
 }
 
@@ -71,3 +85,6 @@ double &S21Matrix::operator()(int i, int j) const {
   }
   return matrix_[i][j];
 }
+
+// additional functions
+
