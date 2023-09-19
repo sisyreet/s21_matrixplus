@@ -4,8 +4,9 @@
 
 class S21Matrix {
     private:
-        int rows_, cols_;
-        double **matrix_;
+        int 	rows_, cols_;
+        double	**matrix_;
+		void	CreateMatrix(int rows, int cols);
 
     public:
         S21Matrix();
@@ -15,13 +16,16 @@ class S21Matrix {
         ~S21Matrix();
 
         // getters and setters
-        int getRows();
-        int getCols();
-        void setRows(int rows);
-        void setCols(int cols);
+        int		GetRows();
+        int		GetCols();
+        void	SetRows(int rows);
+        void	SetCols(int cols);
 
         // overloads
         double &operator()(int i, int j) const;
+		S21Matrix& operator=(S21Matrix &&other) const;
+
+		//additional functions
         
 };
 
