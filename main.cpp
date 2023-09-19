@@ -1,28 +1,7 @@
 #include "s21_matrix_oop.h"
 
-// void printMatrix(S21Matrix m)
-// {
-//     for (int i = 0; i < m.GetRows(); i++)
-//     {
-//         for (int j = 0; j < m.GetCols(); j++) {
-//             std::cout << m(i,j) << " ";
-//         }
-//         std::cout << std::endl;
-//     }
-// }
-
-int main()
+void printMatrix(S21Matrix &m)
 {
-    S21Matrix m(3,3);
-    
-
-	// printMatrix(m);
-    for (int i = 0; i < m.GetRows(); i++)
-    {
-        for (int j = 0; j < m.GetCols(); j++) {
-            m(i,j) = rand() % 100;
-        }
-    }
     for (int i = 0; i < m.GetRows(); i++)
     {
         for (int j = 0; j < m.GetCols(); j++) {
@@ -30,21 +9,41 @@ int main()
         }
         std::cout << std::endl;
     }
-	S21Matrix n(m);
-	for (int i = 0; i < n.GetRows(); i++)
+}
+
+void mRandom(S21Matrix &a) {
+	for (int i = 0; i < a.GetRows(); i++)
     {
-        for (int j = 0; j < n.GetCols(); j++) {
-            std::cout << n(i,j) << " ";
+        for (int j = 0; j < a.GetCols(); j++) {
+            a(i,j) = rand() % 100;
         }
-        std::cout << std::endl;
     }
-    // m.setRows(2);    
-    // for (int i = 0; i < m.GetRows(); i++)
-    // {
-    //     for (int j = 0; j < m.GetCols(); j++) {
-    //         std::cout << m(i,j) << " ";
-    //     }
-    //     std::cout << std::endl;
-    // }
-    // return 0;
+}
+
+int main()
+{
+    S21Matrix m(3,3);
+	mRandom(m);
+	S21Matrix n(4,4);
+	mRandom(n);
+	
+	printMatrix(m);
+	std::cout << "---------------------------\n";
+    printMatrix(n);
+	std::cout << "---------------------------\n";
+   	
+	m = n;
+	
+	std::cout << "---------------------------\n";
+	printMatrix(m);
+    
+
+    // m.SetRows(1);    
+	if (m == n) {
+		std::cout << "They're equal! :D" << std::endl;
+	}
+	else {
+		std::cout << "They're unequal! D:" << std::endl;
+	}
+    return 0;
 }

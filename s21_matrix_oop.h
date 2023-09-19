@@ -22,8 +22,10 @@ class S21Matrix {
         void	SetCols(int cols);
 
         // overloads
-        double &operator()(int i, int j) const;
-		S21Matrix& operator=(S21Matrix &&other) const;
+        double & operator()(int i, int j) const;
+		bool operator==(const S21Matrix &other); 
+		S21Matrix & operator=(const S21Matrix &other);
+		S21Matrix & operator=(S21Matrix &&other) const;
 
 		//additional functions
         
