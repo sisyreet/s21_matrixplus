@@ -24,11 +24,27 @@ int main()
 {
     S21Matrix m(3,3);
 	mRandom(m);
-	// S21Matrix n(4,4);
-	// mRandom(n);
+	S21Matrix n(4,4);
+	mRandom(n);
+	
+	// m.SubMatrix(n);
+
+	// n = m;
+
+	printMatrix(m);
+	
+	// m.SubMatrix(n);
+
+	// printMatrix(m);
+	
+	std::cout << "---------------------------\n";
+
+	m.MulNumber(1232);
 	
 	printMatrix(m);
-	std::cout << "---------------------------\n";
+
+	// printMatrix(m);
+	// std::cout << "---------------------------\n";
     // printMatrix(n);
 	// std::cout << "---------------------------\n";
    	
@@ -38,12 +54,12 @@ int main()
 	// printMatrix(m);
     
 
-    m.SetRows(4);
-	std::cout << "---------------------------\n";
-	printMatrix(m);
-	std::cout << "---------------------------\n";
-	m.SetCols(4);
-	printMatrix(m);
+    // m.SetRows(4);
+	// std::cout << "---------------------------\n";
+	// printMatrix(m);
+	// std::cout << "---------------------------\n";
+	// m.SetCols(4);
+	// printMatrix(m);
 	// if (m == n) {
 	// 	std::cout << "They're equal! :D" << std::endl;
 	// }

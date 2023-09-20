@@ -83,7 +83,7 @@ void S21Matrix::SetRows(int rows) {
 	matrix_ = temp;
 }
 
-void S21Matrix::SetCols(int cols) {
+void S21Matrix::SetCols(int cols) { // leaks!
 	if (cols < 1) {
 		throw std::out_of_range("Number of cols must be positive!");
 	}
@@ -158,16 +158,58 @@ S21Matrix& S21Matrix::operator=(S21Matrix &&other) const {
 	
 }
 
+// operations with matrixes
 
-
-// additional functions
-
-void S21Matrix::CreateMatrix(int rows, int cols)
-{
-	rows_ = rows;
-	cols_ = cols;
-	matrix_ = new double*[rows_]();
-	for (int i = 0; i < rows_; i++) {
-		matrix_[i] = new double[cols_]();
+bool S21Matrix::EqMatrix(const S21Matrix& other) {
+	bool result = true;
+	if ((this->cols_ == other.cols_) && (this->rows_ == other.rows_)) {
+		for (int i = 0; i < rows_; i++) {
+			for (int j = 0; j < cols_; j++) {
+				if (this->matrix_[i][j] != other.matrix_[i][j]) {
+					result = false;
+				}
+			}
+		}
 	}
+	else {
+		result = false;
+	}
+	return result;
+}
+
+void S21Matrix::SumMatrix(const S21Matrix& other) {
+	if (rows_ != other.rows_ && cols_ != other.cols_) {
+		throw std::out_of_range("Matrices must be the same size");
+	}
+	for (int i = 0; i < rows_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			matrix_[i][j] += other.matrix_[i][j];
+		}
+	}
+}
+
+void S21Matrix::SubMatrix(const S21Matrix& other) {
+	if (rows_ != other.rows_ && cols_ != other.cols_) {
+		throw std::out_of_range("Matrices must be the same size");
+	}
+	for (int i = 0; i < rows_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			matrix_[i][j] -= other.matrix_[i][j];
+		}
+	}
+}
+
+void S21Matrix::MulNumber(const double num) {
+	for (int i = 0; i < rows_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			matrix_[i][j] *= num;
+		}
+	}
+}
+
+void S21Matrix::MulMatrix(const S21Matrix& other) {
+	if (rows_ != other.rows_ && cols_ != other.cols_) {
+		throw std::out_of_range("Matrices must be the same size");
+	}
+	
 }
