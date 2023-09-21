@@ -15,31 +15,33 @@ void mRandom(S21Matrix &a) {
 	for (int i = 0; i < a.GetRows(); i++)
     {
         for (int j = 0; j < a.GetCols(); j++) {
-            a(i,j) = rand() % 100;
+            a(i,j) = rand() % 10;
         }
     }
 }
 
 int main()
 {
-    S21Matrix m(3,3);
+    S21Matrix m(3,4);
 	mRandom(m);
-	S21Matrix n(4,4);
+	S21Matrix n(4,3);
 	mRandom(n);
 	
 	// m.SubMatrix(n);
 
 	// n = m;
-
+	std::cout << "---------------------------\n";
 	printMatrix(m);
-	
+	std::cout << "---------------------------\n";
+	printMatrix(n);
+	std::cout << "---------------------------\n";
 	// m.SubMatrix(n);
 
 	// printMatrix(m);
-	
+	std::cout << "---------------------------\n";
 	std::cout << "---------------------------\n";
 
-	m.MulNumber(1232);
+	m.MulMatrix(n);
 	
 	printMatrix(m);
 

@@ -208,8 +208,30 @@ void S21Matrix::MulNumber(const double num) {
 }
 
 void S21Matrix::MulMatrix(const S21Matrix& other) {
-	if (rows_ != other.rows_ && cols_ != other.cols_) {
-		throw std::out_of_range("Matrices must be the same size");
+	if (cols_ != other.rows_) {
+		throw std::out_of_range("Matrices's rows vs cols must be the same size");
 	}
-	
+	double **temp = new double*[cols_]();
+	for (int i = 0; i < cols_; i++) {
+		temp[i] = new double[cols_]();
+	}
+	for (int i = 0; i < cols_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			for (int k = 0; k < cols_; k++) {
+				temp[i][j] += (matrix_[i][k] * other.matrix_[k][j]);
+			}
+		}
+	}
+	delete[] matrix_;
+	this->rows_ = cols_;
+	this->cols_ = cols_;
+	matrix_ = new double*[cols_]();
+	for (int i = 0; i < cols_; i++) {
+		matrix_[i] = new double[cols_]();
+	}
+	for (int i = 0; i < cols_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			matrix_[i][j] = temp[i][j];
+		}
+	}
 }
