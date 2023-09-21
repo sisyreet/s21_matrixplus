@@ -22,10 +22,10 @@ void mRandom(S21Matrix &a) {
 
 int main()
 {
-    S21Matrix m(3,4);
+    S21Matrix m(3,3);
 	mRandom(m);
-	S21Matrix n(4,3);
-	mRandom(n);
+	S21Matrix n(3,3);
+	// mRandom(n);
 	
 	// m.SubMatrix(n);
 
@@ -33,17 +33,17 @@ int main()
 	std::cout << "---------------------------\n";
 	printMatrix(m);
 	std::cout << "---------------------------\n";
-	printMatrix(n);
-	std::cout << "---------------------------\n";
+	// printMatrix(n);
+	// std::cout << "---------------------------\n";
 	// m.SubMatrix(n);
+	m.Transpose();
 
-	// printMatrix(m);
 	std::cout << "---------------------------\n";
-	std::cout << "---------------------------\n";
+	// std::cout << "---------------------------\n";
 
-	m.MulMatrix(n);
+	// m.MulMatrix(n);
 	
-	printMatrix(m);
+	// printMatrix(m);
 
 	// printMatrix(m);
 	// std::cout << "---------------------------\n";

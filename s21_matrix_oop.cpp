@@ -101,6 +101,7 @@ void S21Matrix::SetCols(int cols) { // leaks!
 	for( int i = 0 ; i < rows_; i++ ) {	
 		delete[] matrix_[i];
 	}
+	delete matrix_;
 	cols_ = cols;
 	matrix_ = temp;
 }
@@ -158,7 +159,7 @@ S21Matrix& S21Matrix::operator=(S21Matrix &&other) const {
 	
 }
 
-// operations with matrixes
+// operations with matrices
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	bool result = true;
@@ -211,27 +212,51 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 	if (cols_ != other.rows_) {
 		throw std::out_of_range("Matrices's rows vs cols must be the same size");
 	}
-	double **temp = new double*[cols_]();
-	for (int i = 0; i < cols_; i++) {
-		temp[i] = new double[cols_]();
+	int size = 0;
+	if (cols_ < rows_) {
+		size = cols_;
+	} 
+	else {
+		size = rows_;
 	}
-	for (int i = 0; i < cols_; i++) {
-		for (int j = 0; j < cols_; j++) {
-			for (int k = 0; k < cols_; k++) {
+	double **temp = new double*[size]();
+	for (int i = 0; i < size; i++) {
+		temp[i] = new double[size]();
+	}
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			for (int k = 0; k < size; k++) {
 				temp[i][j] += (matrix_[i][k] * other.matrix_[k][j]);
 			}
 		}
 	}
-	delete[] matrix_;
-	this->rows_ = cols_;
-	this->cols_ = cols_;
-	matrix_ = new double*[cols_]();
-	for (int i = 0; i < cols_; i++) {
-		matrix_[i] = new double[cols_]();
+	for( int i = 0 ; i < rows_; i++ ) {	
+		delete[] matrix_[i];
 	}
-	for (int i = 0; i < cols_; i++) {
-		for (int j = 0; j < cols_; j++) {
+	delete[] matrix_;
+	this->rows_ = size;
+	this->cols_ = size;
+	matrix_ = new double*[size]();
+	for (int i = 0; i < size; i++) {
+		matrix_[i] = new double[size]();
+	}
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
 			matrix_[i][j] = temp[i][j];
 		}
 	}
+	for( int i = 0 ; i < size; i++ ) {	
+		delete[] temp[i];
+	}
+	delete[] temp;
+}
+
+S21Matrix S21Matrix::Transpose() {
+	S21Matrix temp(rows_, cols_);
+	for (int i = 0; i < rows_; i++) {
+		for (int j = 0; j < cols_; j++) {
+			temp.matrix_[j][i] = matrix_[i][j];
+		}
+	}
+	return (temp);
 }
