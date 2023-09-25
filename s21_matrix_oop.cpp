@@ -36,12 +36,12 @@ S21Matrix::S21Matrix(const S21Matrix& other) {
 	}
 }
 
-S21Matrix::S21Matrix(S21Matrix&& other) {
-	// rows_ = other.rows_;
-	// cols_ = other.cols_;
-	// matrix_ = other.matrix_;
-	// other.matrix_ = nullptr;
-}
+// S21Matrix::S21Matrix(S21Matrix&& other) {
+// 	// rows_ = other.rows_;
+// 	// cols_ = other.cols_;
+// 	// matrix_ = other.matrix_;
+// 	// other.matrix_ = nullptr;
+// }
 
 S21Matrix::~S21Matrix() {
 	for( int i = 0 ; i < rows_; i++ ) {	
@@ -108,28 +108,26 @@ void S21Matrix::SetCols(int cols) { // leaks!
 
 // overloads
 
-double &S21Matrix::operator()(int i, int j) const {
-  if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
-    throw std::out_of_range("Index is outside the matrix");
-  }
-  return matrix_[i][j];
+S21Matrix S21Matrix::operator+(S21Matrix &other) const {
+	S21Matrix temp(*this);
+	temp.SumMatrix(other);
+	return (temp);
+}
+
+S21Matrix S21Matrix::operator-(S21Matrix &other) const {
+	S21Matrix temp(*this);
+	temp.SubMatrix(other);
+	return (temp);
+}
+
+S21Matrix S21Matrix::operator*(S21Matrix &other) const {
+	S21Matrix temp(*this);
+	temp.MulMatrix(other);
+	return (temp);
 }
 
 bool S21Matrix::operator==(const S21Matrix &other) {
-	bool result = true;
-	if ((this->cols_ == other.cols_) && (this->rows_ == other.rows_)) {
-		for (int i = 0; i < rows_; i++) {
-			for (int j = 0; j < cols_; j++) {
-				if (this->matrix_[i][j] != other.matrix_[i][j]) {
-					result = false;
-				}
-			}
-		}
-	}
-	else {
-		result = false;
-	}
-	return result;
+	return (EqMatrix(other));
 }
 
 S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает объект по константной ссылке
@@ -141,8 +139,8 @@ S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает 
 		delete[] matrix_[i];
 	}
 	delete[] matrix_;
-	this->rows_ = other.rows_;
-	this->cols_ = other.cols_;
+	rows_ = other.rows_;
+	cols_ = other.cols_;
 	matrix_ = new double*[rows_]();
 	for (int i = 0; i < rows_; i++) {
 		matrix_[i] = new double[cols_]();
@@ -155,8 +153,9 @@ S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает 
 	return *this;
 }
 
-S21Matrix& S21Matrix::operator=(S21Matrix &&other) const {
-	
+S21Matrix &S21Matrix::operator+=(S21Matrix &other) {
+	SumMatrix(other);
+	return (*this);
 }
 
 // operations with matrices
@@ -178,9 +177,18 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	return result;
 }
 
+double &S21Matrix::operator()(int i, int j) const {
+  if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
+    throw std::out_of_range("Index is outside the matrix");
+  }
+  return matrix_[i][j];
+}
+
+// member functions
+
 void S21Matrix::SumMatrix(const S21Matrix& other) {
-	if (rows_ != other.rows_ && cols_ != other.cols_) {
-		throw std::out_of_range("Matrices must be the same size");
+	if (rows_ != other.rows_ || cols_ != other.cols_) {
+		throw std::out_of_range("Matrices must be the same size /sum");
 	}
 	for (int i = 0; i < rows_; i++) {
 		for (int j = 0; j < cols_; j++) {
@@ -190,8 +198,8 @@ void S21Matrix::SumMatrix(const S21Matrix& other) {
 }
 
 void S21Matrix::SubMatrix(const S21Matrix& other) {
-	if (rows_ != other.rows_ && cols_ != other.cols_) {
-		throw std::out_of_range("Matrices must be the same size");
+	if (rows_ != other.rows_ || cols_ != other.cols_) {
+		throw std::out_of_range("Matrices must be the same size /sub");
 	}
 	for (int i = 0; i < rows_; i++) {
 		for (int j = 0; j < cols_; j++) {

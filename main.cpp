@@ -24,21 +24,39 @@ int main()
 {
     S21Matrix m(3,3);
 	mRandom(m);
+	printMatrix(m);
+	std::cout << "---------------------------\n";
 	S21Matrix n(3,3);
-	// mRandom(n);
+	mRandom(n);
+	printMatrix(n);
+	std::cout << "---------------------------\n";
+	S21Matrix t;
+	S21Matrix p;
 	
+	// m.SumMatrix(n);
+	// printMatrix(m);
+	// std::cout << "---------------------------\n";
+
+	// m += n;
+	// printMatrix(m);
+	// std::cout << "---------------------------\n";
+
+
 	// m.SubMatrix(n);
 
-	// n = m;
-	std::cout << "---------------------------\n";
+	// m.SubMatrix(n);
+	// std::cout << "---------------------------\n";
 	printMatrix(m);
 	std::cout << "---------------------------\n";
 	// printMatrix(n);
 	// std::cout << "---------------------------\n";
 	// m.SubMatrix(n);
-	m.Transpose();
-
+	// m.Transpose();
+	t = m * n;
 	std::cout << "---------------------------\n";
+	printMatrix(t);
+
+	// std::cout << "---------------------------\n";
 	// std::cout << "---------------------------\n";
 
 	// m.MulMatrix(n);
@@ -50,12 +68,6 @@ int main()
     // printMatrix(n);
 	// std::cout << "---------------------------\n";
    	
-	// m = n;
-	
-	// std::cout << "---------------------------\n";
-	// printMatrix(m);
-    
-
     // m.SetRows(4);
 	// std::cout << "---------------------------\n";
 	// printMatrix(m);
@@ -68,7 +80,7 @@ int main()
 	// else {
 	// 	std::cout << "They're unequal! D:" << std::endl;
 	// }
-    // return 0;
+    return 0;
 }
 
 // valgrind --leak-check=yes ./s21_matrix
