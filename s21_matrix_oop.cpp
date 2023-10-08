@@ -50,7 +50,7 @@ S21Matrix::~S21Matrix() {
 	delete[] matrix_;
 }
 
-// getters and setter
+// ----- GETTERS, SETTERS ----- //
 
 int S21Matrix::GetRows() {
   return this->rows_;
@@ -79,6 +79,7 @@ void S21Matrix::SetRows(int rows) {
 		delete[] matrix_[i];
 	}
 	delete[] matrix_;
+	matrix_ = nullptr;
 	rows_ = rows;
 	matrix_ = temp;
 }
@@ -102,11 +103,12 @@ void S21Matrix::SetCols(int cols) { // leaks!
 		delete[] matrix_[i];
 	}
 	delete matrix_;
+	matrix_ = nullptr;
 	cols_ = cols;
 	matrix_ = temp;
 }
 
-// overloads
+// ----- OVERLOADS ----- //
 
 S21Matrix S21Matrix::operator+(S21Matrix &other) const {
 	S21Matrix temp(*this);
@@ -139,6 +141,7 @@ S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает 
 		delete[] matrix_[i];
 	}
 	delete[] matrix_;
+	matrix_ = nullptr;
 	rows_ = other.rows_;
 	cols_ = other.cols_;
 	matrix_ = new double*[rows_]();
@@ -158,7 +161,14 @@ S21Matrix &S21Matrix::operator+=(S21Matrix &other) {
 	return (*this);
 }
 
-// operations with matrices
+double &S21Matrix::operator()(int i, int j) const {
+  if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
+    throw std::out_of_range("Index is outside the matrix");
+  }
+  return matrix_[i][j];
+}
+
+// ----- MEMBER FUNCTIONS ----- //
 
 bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	bool result = true;
@@ -176,15 +186,6 @@ bool S21Matrix::EqMatrix(const S21Matrix& other) {
 	}
 	return result;
 }
-
-double &S21Matrix::operator()(int i, int j) const {
-  if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
-    throw std::out_of_range("Index is outside the matrix");
-  }
-  return matrix_[i][j];
-}
-
-// member functions
 
 void S21Matrix::SumMatrix(const S21Matrix& other) {
 	if (rows_ != other.rows_ || cols_ != other.cols_) {
@@ -242,6 +243,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 		delete[] matrix_[i];
 	}
 	delete[] matrix_;
+	matrix_ = nullptr;
 	this->rows_ = size;
 	this->cols_ = size;
 	matrix_ = new double*[size]();
@@ -257,6 +259,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 		delete[] temp[i];
 	}
 	delete[] temp;
+	temp = nullptr;
 }
 
 S21Matrix S21Matrix::Transpose() {
@@ -267,4 +270,82 @@ S21Matrix S21Matrix::Transpose() {
 		}
 	}
 	return (temp);
+}
+
+S21Matrix S21Matrix::CalcComplements() {
+	//  Aij = (-1)^j+i * Mij
+	if (rows_ != cols_) {
+		throw std::invalid_argument("Matrix must be square!");
+	}
+	S21Matrix complements(rows_, cols_);
+	double sign = 1.0;
+	if (rows_ == 1) {
+		complements.matrix_[0][0] = 1.0;
+	} else {
+		for (int i = 0; i < rows_; i++) {
+			for (int j = 0; j < cols_; j++) {
+				if ((i + j) % 2 == 0) {
+					sign = 1.0;
+				} else {
+					sign = -1.0;
+				}
+				complements.matrix_[i][j] = sign * Minor(i, j).Determinant();
+			}
+		}
+	}
+	return (complements);
+}
+
+double S21Matrix::Determinant() {
+	if (rows_ != cols_) {
+		throw std::invalid_argument("Matrix must be square!");
+	}
+	
+	double det = 0.0;
+	double temp[rows_][cols_];
+	if (rows_ == 1) {
+		det = matrix_[0][0];
+	} else if (rows_ == 2) {
+		det = matrix_[0][0] * matrix_[1][1] - matrix_[0][1] * matrix_[1][0];
+	} else if (rows_ == 3) { // triangle rule
+		det = matrix_[0][0] * matrix_[1][1] * matrix_[2][2] +
+			  matrix_[0][1] * matrix_[1][2] * matrix_[2][0] +
+			  matrix_[1][0] * matrix_[0][2] * matrix_[2][1] -
+			  matrix_[0][2] * matrix_[1][1] * matrix_[2][0] - 
+			  matrix_[1][0] * matrix_[0][1] * matrix_[2][2] - 
+			  matrix_[0][0] * matrix_[1][2] * matrix_[2][1];
+	} else {
+		for (int i = 0; i < cols_; i++) {
+			double sign;
+			if (i % 2 == 0) {
+				sign = 1.0;
+			} else {
+				sign = -1.0;
+			}
+			det += sign * matrix_[0][i] * Minor(0, i).Determinant();
+		}
+	
+	}
+	return (det);
+}
+
+S21Matrix S21Matrix::InverseMatrix() {
+	// А^-1 = 1/det * calcomp
+}
+
+S21Matrix S21Matrix::Minor(int rows, int cols) const {
+  S21Matrix minor(rows_ - 1, cols_ - 1);
+  int i, j, k, l;
+  for (i = 0, k = 0; i < rows_ - 1; i++, k++) {
+    for (j = 0, l = 0; j < cols_ - 1; j++, l++) {
+      if (k == rows) {
+        k++;
+      }
+      if (l == cols) {
+        l++;
+      }
+      minor.matrix_[i][j] = matrix_[k][l];
+    }
+  }
+  return (minor);
 }

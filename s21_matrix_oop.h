@@ -1,6 +1,7 @@
 #ifndef S21_MATRIX_OOP_H
 #define S21_MATRIX_OOP_H
 #include <iostream>
+#include <cmath>
 
 class S21Matrix {
     private:
@@ -39,6 +40,10 @@ class S21Matrix {
 		void		MulNumber(const double num);
 		void		MulMatrix(const S21Matrix& other);
 		S21Matrix	Transpose();
+		S21Matrix 	CalcComplements();
+		double 		Determinant();
+		S21Matrix	InverseMatrix();
+		S21Matrix	Minor(int rows, int cols) const;
 
 		//additional functions
         
