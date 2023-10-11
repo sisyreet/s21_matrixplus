@@ -36,12 +36,12 @@ S21Matrix::S21Matrix(const S21Matrix& other) {
 	}
 }
 
-// S21Matrix::S21Matrix(S21Matrix&& other) {
-// 	// rows_ = other.rows_;
-// 	// cols_ = other.cols_;
-// 	// matrix_ = other.matrix_;
-// 	// other.matrix_ = nullptr;
-// }
+S21Matrix::S21Matrix(S21Matrix&& other) {
+	rows_ = other.rows_;
+	cols_ = other.cols_;
+	matrix_ = other.matrix_;
+	other.matrix_ = nullptr;
+}
 
 S21Matrix::~S21Matrix() {
 	for( int i = 0 ; i < rows_; i++ ) {	
@@ -135,13 +135,14 @@ bool S21Matrix::operator==(const S21Matrix &other) {
 S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает объект по константной ссылке
 	// if this != other
 	if (*this == other)	{
-		return *this;
+		return (*this);
 	}
 	for( int i = 0 ; i < rows_; i++ ) {	
 		delete[] matrix_[i];
 	}
 	delete[] matrix_;
 	matrix_ = nullptr;
+
 	rows_ = other.rows_;
 	cols_ = other.cols_;
 	matrix_ = new double*[rows_]();
@@ -153,13 +154,38 @@ S21Matrix& S21Matrix::operator=(const S21Matrix &other) { // принимает 
 			matrix_[i][j] = other.matrix_[i][j];
 		}
 	}
-	return *this;
+	return (*this);
 }
 
 S21Matrix &S21Matrix::operator+=(S21Matrix &other) {
 	SumMatrix(other);
 	return (*this);
 }
+
+S21Matrix &S21Matrix::operator-=(S21Matrix &other) {
+	SubMatrix(other);
+	return (*this);
+}
+
+S21Matrix	&S21Matrix::operator=(S21Matrix &&other) {
+	if (this == &other) {
+		return (*this);
+	}
+
+	for( int i = 0 ; i < rows_; i++ ) {	
+		delete[] matrix_[i];
+	}
+	delete matrix_;
+	matrix_ = nullptr;
+
+	rows_ = other.rows_;
+	cols_ = other.cols_;
+	matrix_ = other.matrix_;
+	other.matrix_ = nullptr;
+
+	return (*this);
+}
+
 
 double &S21Matrix::operator()(int i, int j) const {
   if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
@@ -307,14 +333,14 @@ double S21Matrix::Determinant() {
 		det = matrix_[0][0];
 	} else if (rows_ == 2) {
 		det = matrix_[0][0] * matrix_[1][1] - matrix_[0][1] * matrix_[1][0];
-	} else if (rows_ == 3) { // triangle rule
+	} else if (rows_ == 3) {
 		det = matrix_[0][0] * matrix_[1][1] * matrix_[2][2] +
 			  matrix_[0][1] * matrix_[1][2] * matrix_[2][0] +
 			  matrix_[1][0] * matrix_[0][2] * matrix_[2][1] -
 			  matrix_[0][2] * matrix_[1][1] * matrix_[2][0] - 
 			  matrix_[1][0] * matrix_[0][1] * matrix_[2][2] - 
 			  matrix_[0][0] * matrix_[1][2] * matrix_[2][1];
-	} else {
+	} else { // SEGFAULT!!
 		for (int i = 0; i < cols_; i++) {
 			double sign;
 			if (i % 2 == 0) {
@@ -331,6 +357,21 @@ double S21Matrix::Determinant() {
 
 S21Matrix S21Matrix::InverseMatrix() {
 	// А^-1 = 1/det * calcomp
+
+	S21Matrix temp(CalcComplements());
+	double det = Determinant();
+	if (det != 0.0) {
+		temp.Transpose();
+		for (int i = 0; i < rows_; i++) {
+			for (int j = 0; j < cols_; j++) {
+				temp.matrix_[i][j] = temp.matrix_[i][j] / det;
+			}
+		}
+	} else {
+		throw std::invalid_argument("Matrix should be square or determinant should be not equal 0");
+	}
+
+  	return (temp);
 }
 
 S21Matrix S21Matrix::Minor(int rows, int cols) const {

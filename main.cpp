@@ -22,7 +22,7 @@ void mRandom(S21Matrix &a) {
 
 int main()
 {
-    S21Matrix m(4,4);
+    S21Matrix m(3,3);
 	mRandom(m);
 	printMatrix(m);
 	std::cout << "---------------------------\n";
@@ -33,53 +33,8 @@ int main()
 	S21Matrix t;
 	S21Matrix p;
 	
-	// m.SumMatrix(n);
-	// printMatrix(m);
-	// std::cout << "---------------------------\n";
-
-	// m += n;
-	// printMatrix(m);
-	// std::cout << "---------------------------\n";
-
-
-	// m.SubMatrix(n);
-
-	// m.SubMatrix(n);
-	// std::cout << "---------------------------\n";
-	// printMatrix(m);
-	std::cout << m.Determinant() << std::endl;
-	// printMatrix(n);
-	// std::cout << "---------------------------\n";
-	// m.SubMatrix(n);
-	// m.Transpose();
-	// t = m * n;
-	// std::cout << "---------------------------\n";
-	// printMatrix(t);
-
-	// std::cout << "---------------------------\n";
-	// std::cout << "---------------------------\n";
-
-	// m.MulMatrix(n);
+	n.InverseMatrix();
 	
-	// printMatrix(m);
-
-	// printMatrix(m);
-	// std::cout << "---------------------------\n";
-    // printMatrix(n);
-	// std::cout << "---------------------------\n";
-   	
-    // m.SetRows(4);
-	// std::cout << "---------------------------\n";
-	// printMatrix(m);
-	// std::cout << "---------------------------\n";
-	// m.SetCols(4);
-	// printMatrix(m);
-	// if (m == n) {
-	// 	std::cout << "They're equal! :D" << std::endl;
-	// }
-	// else {
-	// 	std::cout << "They're unequal! D:" << std::endl;
-	// }
     return 0;
 }
 

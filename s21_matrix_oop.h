@@ -7,13 +7,12 @@ class S21Matrix {
     private:
         int 	rows_, cols_;
         double	**matrix_;
-		void	CreateMatrix(int rows, int cols);
 
     public:
         S21Matrix();
         S21Matrix(int rows, int cols);
         S21Matrix(const S21Matrix& other);
-        // S21Matrix(S21Matrix&& other);
+        S21Matrix(S21Matrix&& other);
         ~S21Matrix();
 
         // getters and setters
@@ -23,15 +22,15 @@ class S21Matrix {
         void	SetCols(int cols);
 
         // overloads
-        double 		&operator()(int i, int j) const;
 		S21Matrix	operator+(S21Matrix &other) const;
 		S21Matrix	operator-(S21Matrix &other) const;
 		S21Matrix	operator*(S21Matrix &other) const;
 		bool		operator==(const S21Matrix &other); 
 		S21Matrix	&operator=(const S21Matrix &other);
 		S21Matrix	&operator+=(S21Matrix &other);
-		
-		//S21Matrix & operator=(S21Matrix &&other) const;
+		S21Matrix	&operator-=(S21Matrix &other);
+        double 		&operator()(int i, int j) const;
+		S21Matrix	&operator=(S21Matrix &&other);
 
 		// member functions
 		bool		EqMatrix(const S21Matrix& other);
