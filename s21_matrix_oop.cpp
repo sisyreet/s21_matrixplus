@@ -44,20 +44,23 @@ S21Matrix::S21Matrix(S21Matrix&& other) {
 }
 
 S21Matrix::~S21Matrix() {
-	for( int i = 0 ; i < rows_; i++ ) {	
-		delete[] matrix_[i];
+	if (matrix_ != nullptr)
+	{
+		for( int i = 0 ; i < rows_; i++ ) {	
+			delete[] matrix_[i];
+		}
+		delete[] matrix_;
 	}
-	delete[] matrix_;
 }
 
 // ----- GETTERS, SETTERS ----- //
 
 int S21Matrix::GetRows() {
-  return this->rows_;
+  	return this->rows_;
 }
 
 int S21Matrix::GetCols() {
-  return this->cols_;
+  	return this->cols_;
 }
 
 void S21Matrix::SetRows(int rows) {
@@ -188,10 +191,10 @@ S21Matrix	&S21Matrix::operator=(S21Matrix &&other) {
 
 
 double &S21Matrix::operator()(int i, int j) const {
-  if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
-    throw std::out_of_range("Index is outside the matrix");
-  }
-  return matrix_[i][j];
+	if (i < 0 || j < 0 || i >= rows_ || j >= cols_) {
+		throw std::out_of_range("Index is outside the matrix");
+	}
+	return (matrix_[i][j]);
 }
 
 // ----- MEMBER FUNCTIONS ----- //
@@ -328,7 +331,7 @@ double S21Matrix::Determinant() {
 	}
 	
 	double det = 0.0;
-	double temp[rows_][cols_];
+
 	if (rows_ == 1) {
 		det = matrix_[0][0];
 	} else if (rows_ == 2) {
@@ -340,7 +343,7 @@ double S21Matrix::Determinant() {
 			  matrix_[0][2] * matrix_[1][1] * matrix_[2][0] - 
 			  matrix_[1][0] * matrix_[0][1] * matrix_[2][2] - 
 			  matrix_[0][0] * matrix_[1][2] * matrix_[2][1];
-	} else { // SEGFAULT!!
+	} else {
 		for (int i = 0; i < cols_; i++) {
 			double sign;
 			if (i % 2 == 0) {
@@ -350,43 +353,43 @@ double S21Matrix::Determinant() {
 			}
 			det += sign * matrix_[0][i] * Minor(0, i).Determinant();
 		}
-	
 	}
 	return (det);
 }
 
 S21Matrix S21Matrix::InverseMatrix() {
-	// А^-1 = 1/det * calcomp
-
 	S21Matrix temp(CalcComplements());
 	double det = Determinant();
+
 	if (det != 0.0) {
 		temp.Transpose();
 		for (int i = 0; i < rows_; i++) {
 			for (int j = 0; j < cols_; j++) {
 				temp.matrix_[i][j] = temp.matrix_[i][j] / det;
+				std::cout << temp.matrix_[i][j] << " ";
 			}
+			std::cout << std::endl;
 		}
 	} else {
 		throw std::invalid_argument("Matrix should be square or determinant should be not equal 0");
 	}
-
   	return (temp);
 }
 
 S21Matrix S21Matrix::Minor(int rows, int cols) const {
-  S21Matrix minor(rows_ - 1, cols_ - 1);
-  int i, j, k, l;
-  for (i = 0, k = 0; i < rows_ - 1; i++, k++) {
-    for (j = 0, l = 0; j < cols_ - 1; j++, l++) {
-      if (k == rows) {
-        k++;
-      }
-      if (l == cols) {
-        l++;
-      }
-      minor.matrix_[i][j] = matrix_[k][l];
-    }
-  }
-  return (minor);
+	S21Matrix minor(rows_ - 1, cols_ - 1);
+	int i, j, k, l;
+
+	for (i = 0, k = 0; i < rows_ - 1; i++, k++) {
+		for (j = 0, l = 0; j < cols_ - 1; j++, l++) {
+		if (k == rows) {
+			k++;
+		}
+		if (l == cols) {
+			l++;
+		}
+		minor.matrix_[i][j] = matrix_[k][l];
+		}
+	}
+  	return (minor);
 }

@@ -4,10 +4,6 @@
 #include <cmath>
 
 class S21Matrix {
-    private:
-        int 	rows_, cols_;
-        double	**matrix_;
-
     public:
         S21Matrix();
         S21Matrix(int rows, int cols);
@@ -42,10 +38,11 @@ class S21Matrix {
 		S21Matrix 	CalcComplements();
 		double 		Determinant();
 		S21Matrix	InverseMatrix();
-		S21Matrix	Minor(int rows, int cols) const;
+		S21Matrix	Minor(int rows, int cols) const;        
 
-		//additional functions
-        
+	private:
+        int 	rows_, cols_;
+        double	**matrix_;
 };
 
 #endif
