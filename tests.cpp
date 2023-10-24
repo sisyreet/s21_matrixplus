@@ -347,7 +347,32 @@ TEST(MemberFunctions, MulNumber) {
 
 int main(int argc, char **argv) {
 
-  testing::InitGoogleTest(&argc, argv);
+	S21Matrix a(3,2);
+	S21Matrix b(2,3);
+	S21Matrix c;
 
-  return (RUN_ALL_TESTS());
+	for (int i = 0; i < a.GetRows(); i++) {
+		for (int j = 0; j < a.GetCols(); j++) {
+			a(i,j) = (rand() % 100);
+			std::cout << a(i,j) << ", ";
+		}
+		std::cout << std::endl;
+	}
+	for (int i = 0; i < b.GetRows(); i++) {
+		for (int j = 0; j < b.GetCols(); j++) {
+			b(i,j) = (rand() % 100);
+			std::cout << b(i,j) << ", ";
+		}
+		std::cout << std::endl;
+	}
+	a.MulMatrix(b);
+	for (int i = 0; i < a.GetRows(); i++) {
+		for (int j = 0; j < a.GetCols(); j++) {
+			std::cout << a(i,j) << ", ";
+		}
+		std::cout << std::endl;
+	}
+	// testing::InitGoogleTest(&argc, argv);
+
+	// return (RUN_ALL_TESTS());
 }

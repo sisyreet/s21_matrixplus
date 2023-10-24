@@ -250,13 +250,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 	if (cols_ != other.rows_) {
 		throw std::out_of_range("Matrices's rows vs cols must be the same size");
 	}
-	int size = 0;
-	if (cols_ < rows_) {
-		size = cols_;
-	} 
-	else {
-		size = rows_;
-	}
+	int size = cols_ < rows_ ? cols_ : rows_;
 	double **temp = new double*[size]();
 	for (int i = 0; i < size; i++) {
 		temp[i] = new double[size]();
@@ -264,8 +258,10 @@ void S21Matrix::MulMatrix(const S21Matrix& other) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			for (int k = 0; k < size; k++) {
+				std::cout << temp[i][j] << ", ";
 				temp[i][j] += (matrix_[i][k] * other.matrix_[k][j]);
 			}
+			std::cout << std::endl;
 		}
 	}
 	for( int i = 0 ; i < rows_; i++ ) {	
