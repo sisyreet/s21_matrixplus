@@ -87,7 +87,7 @@ void S21Matrix::SetRows(int rows) {
 	matrix_ = temp;
 }
 
-void S21Matrix::SetCols(int cols) { // leaks!
+void S21Matrix::SetCols(int cols) {
 	if (cols < 1) {
 		throw std::out_of_range("Number of cols must be positive!");
 	}
