@@ -1,10 +1,12 @@
 #ifndef S21_MATRIX_OOP_H
 #define S21_MATRIX_OOP_H
 #include <iostream>
-// #include <cmath>
+#include <cmath>
 
 class S21Matrix {
     public:
+		static const double epsilon;
+		
         S21Matrix();
         S21Matrix(int rows, int cols);
         S21Matrix(const S21Matrix& other);
@@ -38,7 +40,8 @@ class S21Matrix {
 		S21Matrix 	CalcComplements();
 		double 		Determinant();
 		S21Matrix	InverseMatrix();
-		S21Matrix	Minor(int rows, int cols) const;        
+		S21Matrix	Minor(int rows, int cols) const;
+		
 
 	private:
         int 	rows_, cols_;

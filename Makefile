@@ -1,7 +1,7 @@
 NAME		= s21_matrix_oop.a
 TEST		= test
 SRCS		= s21_matrix_oop.cpp
-T_SRCS		= tests.cpp s21_matrix_oop.cpp
+T_SRCS		= s21_matrix_tests.cpp s21_matrix_oop.cpp
 
 HEADER		= s21_matrix_oop.h
 
