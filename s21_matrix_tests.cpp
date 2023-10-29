@@ -50,8 +50,10 @@ TEST(Constructors, MoveConstructor) {
     }
   }
   S21Matrix n(std::move(m));
-  EXPECT_EQ(m.GetRows(), n.GetRows());
-  EXPECT_EQ(m.GetCols(), n.GetCols());
+	EXPECT_EQ(n.GetRows(), 30);
+  EXPECT_EQ(n.GetCols(), 30);
+  EXPECT_EQ(m.GetRows(), 0);
+  EXPECT_EQ(m.GetCols(), 0);
 }
 
 // ACCESSORS (GETTERS) AND MUTATORS (SETTERS) //
@@ -208,14 +210,14 @@ TEST(AccessorsMutators, ColsSetSame) {
 
 TEST(AccessorsMutators, RowsSetWrong) {
   S21Matrix m(3, 3);
-  EXPECT_THROW(m.SetRows(0), std::out_of_range);
-  EXPECT_THROW(m.SetRows(-115), std::out_of_range);
+  EXPECT_THROW(m.SetRows(0), std::invalid_argument);
+  EXPECT_THROW(m.SetRows(-115), std::invalid_argument);
 }
 
 TEST(AccessorsMutators, ColsSetWrong) {
   S21Matrix m(3, 3);
-  EXPECT_THROW(m.SetCols(0), std::out_of_range);
-  EXPECT_THROW(m.SetCols(-115), std::out_of_range);
+  EXPECT_THROW(m.SetCols(0), std::invalid_argument);
+  EXPECT_THROW(m.SetCols(-115), std::invalid_argument);
 }
 
 // MEMBER FUNCTIONS //

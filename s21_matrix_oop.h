@@ -1,7 +1,5 @@
 #ifndef S21_MATRIX_OOP_H
 #define S21_MATRIX_OOP_H
-#include <cmath>
-#include <iostream>
 
 class S21Matrix {
  public:
@@ -14,8 +12,8 @@ class S21Matrix {
   ~S21Matrix();
 
   // getters and setters
-  int GetRows();
-  int GetCols();
+  int GetRows() const;
+  int GetCols() const;
   void SetRows(int rows);
   void SetCols(int cols);
 
@@ -46,6 +44,9 @@ class S21Matrix {
  private:
   int rows_, cols_;
   double **matrix_;
+
+  void CreateMatrix(int rows, int cols);
+  void DeleteMatrix();
 };
 
 #endif
